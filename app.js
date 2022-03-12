@@ -5,11 +5,14 @@ const app = new PIXI.Application({
     resolution: window.devicePixelRatio || 1,
     resizeTo: window
 });
-
+let play = false;
+const player = document.getElementById("muzak");
 document.body.appendChild(app.view);
 document.addEventListener("keydown", function(e) {
-    if (e.code = "Space") {
-        document.getElementById("muzak").play();
+    console.log(e.code)
+    if (e.code == "Space") {
+        play = !play;
+        (play) ? player.play(): player.pause();
 
     }
 })
@@ -40,13 +43,14 @@ const AdvancedBloom = new PIXI.filters.AdvancedBloomFilter({
     bloomScale: 2,
     brightness: 2
 });
-container.filters = [AdvancedBloom]
+const bloom = new PIXI.filters.BloomFilter();
+container.filters = [bloom]
 for (let i = 0; i < 10000; i++) {
     const star = new PIXI.Sprite(texture);
     let scale = (Math.random()) / 4
     star.anchor.set(0.5);
     star.scale.set(scale);
-    star.tint = 0xffffff * Math.random();
+    star.tint = 0xfa0000 * Math.random();
     star.x = rnd(-4 * window.innerWidth, 4 * window.innerWidth);
     star.y = rnd(-4 * window.innerHeight, 4 * window.innerHeight);
     star.l = Math.random() * 4;
