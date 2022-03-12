@@ -34,6 +34,7 @@ app.stage.addChild(container);
 
 // Create a new texture
 const texture = PIXI.Texture.from('star.png');
+const öcü = PIXI.Texture.from('öcü.png');
 const rnd = (min, max) => Math.floor(min + Math.random() * (max + 1 - min))
     // Create a 5x5 grid of bunnies
 const AdvancedBloom = new PIXI.filters.AdvancedBloomFilter({
@@ -43,7 +44,7 @@ const AdvancedBloom = new PIXI.filters.AdvancedBloomFilter({
 const bloom = new PIXI.filters.BloomFilter();
 container.filters = [bloom]
 for (let i = 0; i < 10000; i++) {
-    const star = new PIXI.Sprite(texture);
+    const star = (~~(Math.random() * 1000) == 666) ? new PIXI.Sprite(öcü) : new PIXI.Sprite(texture);
     let scale = (Math.random()) / 4
     star.anchor.set(0.5);
     star.scale.set(scale);
