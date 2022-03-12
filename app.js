@@ -13,9 +13,8 @@ document.addEventListener("keydown", function(e) {
     if (e.code == "Space") {
         play = !play;
         (play) ? player.play(): player.pause();
-
     }
-})
+});
 let cameraVector = {
     a: 0,
     l: 0
@@ -30,8 +29,6 @@ document.addEventListener("mousemove", function(e) {
     b = center.y - e.y;
     cameraVector.a = Math.atan2(center.y - e.y, center.x - e.x);
     cameraVector.l = Math.sqrt(a * a + b * b);
-
-
 })
 app.stage.addChild(container);
 
