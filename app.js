@@ -32,7 +32,16 @@ let cameraVector = {
 text.x = text.y = 10;
 
 document.body.appendChild(app.view);
-document.addEventListener("touchstart", (e) => console.log(e))
+document.addEventListener("touchmove", (e) => {
+    let { clientX, clientY } = e.touches[0];
+
+    center.x = app.screen.width / 2;
+    center.y = app.screen.height / 2;
+    a = clientX - center.x;
+    b = clientY - center.y;
+    cameraVector.a = Math.atan2(center.y - clientY, center.x - clientX);
+    cameraVector.l = Math.sqrt(a * a + b * b);
+})
 document.addEventListener("keydown", function(e) {
     if (e.code == "Space") {
         text.text = ""
