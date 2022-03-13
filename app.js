@@ -1,8 +1,10 @@
-let player = document.getElementById("muzak"),
-    cameraVector = {
+/* eslint-disable */
+let cameraVector = {
         a: 0,
         l: 0
     },
+    sound = PIXI.sound.Sound.from('key.mp3'),
+    bgSound = PIXI.sound.Sound.from('audio.mp3'),
     center = {},
     app = new PIXI.Application({
         width: window.innerWidth,
@@ -35,7 +37,7 @@ document.addEventListener("keydown", function(e) {
     if (e.code == "Space") {
         text.text = ""
         play = !play;
-        (play) ? player.play(): player.pause();
+        (play) ? bgSound.play(): bgSound.pause();
     }
     if (e.code == "KeyR") {
         text.text = ""
@@ -56,7 +58,9 @@ document.addEventListener("mousemove", function(e) {
 app.stage.addChild(container);
 app.stage.addChild(text);
 container.filters = [AdvancedBloom];
-
+setTimeout(() => {
+    text.visible = false;
+}, 5000)
 for (let i = 0; i < 10000; i++) {
     let luck = ~~(Math.random() * 1000) == 500;
     sayaç += (luck) ? 1 : 0;
@@ -67,6 +71,8 @@ for (let i = 0; i < 10000; i++) {
     star.interactive = luck;
     star.buttonMode = luck;
     star.on("pointerdown", function() {
+        sound.filters = [new PIXI.sound.filters.ReverbFilter()];
+        sound.play();
         sayaç--;
         this.texture = texture;
         this.scale.set(Math.random() / 4);
