@@ -1,4 +1,6 @@
 /* eslint-disable */
+
+
 let cameraVector = {
         a: 0,
         l: 0
@@ -13,10 +15,11 @@ let cameraVector = {
         resolution: window.devicePixelRatio || 1,
         resizeTo: window
     }),
+    trMessage = "Arka plan müziğini çalmak/durdurmak için boşluk tuşuna bas.\nBaşlangıç noktasına dönmek için r tuşuna bas.",
+    enMessage = "Press space to play/pause background music\nPress r to reset location to beginning",
     play = false,
     container = new PIXI.Container(50000),
-
-    text = new PIXI.Text(`${(navigator.language=="tr")?"Arka plan müziğini çalmak/durdurmak için boşluk tuşuna bas.\nBaşlangıç noktasına dönmek için r tuşuna bas.":"Press space to play/pause background music\nPress r to reset location to beginning"}`, { fontFamily: 'monospace', fontSize: 24, fill: 0xdddddd, align: 'left' }),
+    text = new PIXI.Text(`${(navigator.language=="tr")?trMessage:enMessage}`, { fontFamily: 'monospace', fontSize: 12, fill: 0xdddddd, align: 'left' }),
     sayaç = 0,
     texture = PIXI.Texture.from('star.png'),
     img = PIXI.Texture.from('img.png'),
@@ -28,13 +31,22 @@ let cameraVector = {
     lerp = (start, end, t) => start * (1 - t) + end * t;
 
 
-
 text.x = text.y = 10;
 
 document.body.appendChild(app.view);
+
+
+document.querySelector("canvas").addEventListener("touchstart", function() {
+    if (this.webkitRequestFullScreen) {
+        this.webkitRequestFullScreen();
+    } else {
+        this.mozRequestFullScreen();
+    }
+})
+
+
 document.addEventListener("touchmove", (e) => {
     let { clientX, clientY } = e.touches[0];
-
     center.x = app.screen.width / 2;
     center.y = app.screen.height / 2;
     a = clientX - center.x;
@@ -42,6 +54,8 @@ document.addEventListener("touchmove", (e) => {
     cameraVector.a = Math.atan2(center.y - clientY, center.x - clientX);
     cameraVector.l = Math.sqrt(a * a + b * b);
 })
+
+
 document.addEventListener("keydown", function(e) {
     if (e.code == "Space") {
         text.text = ""
@@ -56,6 +70,8 @@ document.addEventListener("keydown", function(e) {
 
     }
 });
+
+
 document.addEventListener("mousemove", function(e) {
     center.x = app.screen.width / 2;
     center.y = app.screen.height / 2;
@@ -64,12 +80,18 @@ document.addEventListener("mousemove", function(e) {
     cameraVector.a = Math.atan2(center.y - e.y, center.x - e.x);
     cameraVector.l = Math.sqrt(a * a + b * b);
 })
+
+
 app.stage.addChild(container);
+
 app.stage.addChild(text);
+
 container.filters = [AdvancedBloom];
+
 setTimeout(() => {
     text.visible = false;
 }, 5000)
+
 for (let i = 0; i < 10000; i++) {
     let luck = ~~(Math.random() * 1000) == 500;
     sayaç += (luck) ? 1 : 0;
